@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Cmsbundle by Orbitale</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Cmsbundle</h1>
+      <h2 class="project-tagline">Simple CMS bundle for Symfony</h2>
+      <a href="https://github.com/Orbitale/CmsBundle" class="btn">View on GitHub</a>
+      <a href="https://github.com/Orbitale/CmsBundle/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Orbitale/CmsBundle/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <p><a href="https://insight.sensiolabs.com/projects/dcb6d7ad-83c6-458d-acd6-8dde8b8020bc"><img src="https://insight.sensiolabs.com/projects/dcb6d7ad-83c6-458d-acd6-8dde8b8020bc/mini.png" alt="SensioLabsInsight"></a>
+<a href="https://coveralls.io/r/Orbitale/CmsBundle?branch=master"><img src="https://coveralls.io/repos/Orbitale/CmsBundle/badge.svg?branch=master" alt="Coverage Status"></a>
+<a href="https://travis-ci.org/Orbitale/CmsBundle"><img src="https://travis-ci.org/Orbitale/CmsBundle.svg?branch=master" alt="Build Status"></a></p>
+
+<h5>
+<a id="index" class="anchor" href="#index" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Index</h5>
+
+<ul>
+<li><a href="#requirements">Requirements</a></li>
+<li><a href="#install">Install</a></li>
+<li><a href="#setup">Setup</a></li>
+<li>
+<a href="#usage">Usage</a>
+
+<ul>
+<li><a href="#manage-pages">Manage pages</a></li>
+<li><a href="#view-pages">View pages</a></li>
+<li><a href="#generate-a-route-based-on-a-single-page">Generate a route based on a single page</a></li>
+</ul>
+</li>
+<li><a href="#change-homepage">Change homepage</a></li>
+<li><a href="#page-restriction">Page restriction based <code>host</code> and/or <code>locale</code></a></li>
+<li>
+<a href="#design">Design</a>
+
+<ul>
+<li><a href="#using-different-layouts">Using different layouts</a></li>
+<li><a href="#advanced-layout-configuration">Advanced layout configuration</a></li>
+<li><a href="#breadcrumbs">Changing the "breadcrumbs" look</a></li>
+</ul>
+</li>
+<li><a href="#easyadmin">Setup EasyAdminBundle to manage pages and categories in its back-end</a></li>
+<li><a href="#configuration-reference">Configuration reference</a></li>
+<li><a href="#changelog">Changelog</a></li>
+</ul>
+
+<h1>
+<a id="orbitale-cms-bundle" class="anchor" href="#orbitale-cms-bundle" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Orbitale CMS Bundle</h1>
+
+<p>This bundle is a simple helper to create a very simple CMS based on a classic system with Pages and Categories.</p>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h2>
+
+<ul>
+<li>PHP 5.4+ (because we are using Traits)</li>
+<li>Symfony 2.3+</li>
+<li>Doctrine ORM</li>
+</ul>
+
+<h2>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install</h2>
+
+<p><em>Warning:</em> This bundle uses PHP Traits, so you must have PHP 5.4+</p>
+
+<p>Require the bundle by using <a href="https://getcomposer.org/">Composer</a>:</p>
+
+<div class="highlight highlight-source-shell"><pre>$ composer require orbitale/cms-bundle</pre></div>
+
+<h2>
+<a id="setup" class="anchor" href="#setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup</h2>
+
+<p>Register the necessary bundles in your Kernel:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">// app/AppKernel.php</span></span>
+<span class="pl-s1"><span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">registerBundles</span>()</span>
+<span class="pl-s1">{</span>
+<span class="pl-s1">    <span class="pl-smi">$bundles</span> <span class="pl-k">=</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">        <span class="pl-c">// ...</span></span>
+<span class="pl-s1">        <span class="pl-k">new</span> <span class="pl-c1">Orbitale\Bundle\CmsBundle\</span><span class="pl-c1">OrbitaleCmsBundle</span>(),</span>
+<span class="pl-s1">    );</span>
+<span class="pl-s1">}</span>
+<span class="pl-s1"></span></pre></div>
+
+<p>Import the necessary routing files.</p>
+
+<p><em>Warning:</em>
+ Both <code>Page</code> and <code>Category</code> controllers have to be "alone" in their routing path,
+ because there is a "tree" routing management. If you set the prefix as "/"
+ or any other path you are already using, make sure that <code>OrbitaleCmsBundle</code> 
+ routes are loaded <strong>at the end of your routing file</strong>, or you may have some 
+ unexpected "404" or other errors, depending on the routes priority.<br>
+ This is why we recommend you to <strong>load the <code>CategoryController</code> <em>before</em> the
+ <code>PageController</code></strong>, and let both routes config be <strong>the last ones</strong> of your 
+ <code>routing.yml</code> file.<br>
+ <strong>Note:</strong> In technical terms, the whole URI is scanned, not a simple part of it,
+ this is why it can analyze very deep URIs like
+ <code>/home/blog/parent-link/child-link/element</code>, and check all pages/categories.</p>
+
+<p>Example:</p>
+
+<div class="highlight highlight-source-yaml"><pre><span class="pl-c"># app/config/routing.yml</span>
+<span class="pl-s"><span class="pl-ent">orbitale_cms_category:</span></span>
+    <span class="pl-s"><span class="pl-ent">resource:</span> <span class="pl-s"><span class="pl-pds">"</span>@OrbitaleCmsBundle/Controller/CategoryController.php<span class="pl-pds">"</span></span></span>
+    <span class="pl-s"><span class="pl-ent">type:</span>     <span class="pl-s">annotation</span></span>
+    <span class="pl-s"><span class="pl-ent">prefix:</span>   <span class="pl-s">/category/</span></span>
+
+<span class="pl-s"><span class="pl-ent">orbitale_cms_page:</span></span>
+    <span class="pl-s"><span class="pl-ent">resource:</span> <span class="pl-s"><span class="pl-pds">"</span>@OrbitaleCmsBundle/Controller/PageController.php<span class="pl-pds">"</span></span></span>
+    <span class="pl-s"><span class="pl-ent">type:</span>     <span class="pl-s">annotation</span></span>
+    <span class="pl-s"><span class="pl-ent">prefix:</span>   <span class="pl-s">/page/</span></span></pre></div>
+
+<p>Update your database by executing this command from your Symfony root directory:</p>
+
+<div class="highlight highlight-source-shell"><pre>$ php app/console doctrine:schema:update --force</pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<h3>
+<a id="manage-pages" class="anchor" href="#manage-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Manage pages</h3>
+
+<p>To manage your pages, you should use any back-end solution, like
+<a href="https://github.com/javiereguiluz/EasyAdminBundle/">EasyAdmin</a> (which we suggest)
+or <a href="https://sonata-project.org/bundles/admin">SonataAdmin</a>, or any other backend
+solution that can operate CRUD actions on entities.
+You must have configured it to manage at least the
+<code>Orbitale\Bundle\CmsBundle\Entity\Page</code> entity.</p>
+
+<h3>
+<a id="view-pages" class="anchor" href="#view-pages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>View pages</h3>
+
+<p>The <code>PageController</code> handles some methods to view pages with a single
+<code>indexAction()</code>, and the <code>CategoryController</code> uses its route to show all pages
+within a specified <code>Category</code>.</p>
+
+<p>The URI for both is simply <code>/{slug}</code> where <code>slug</code> is the... page or category slug.</p>
+
+<p>If your page or category has one <code>parent</code>, then the URI is the following:
+<code>/{parentSlug}/{slug}</code>. </p>
+
+<p>You can notice that we respect the pages hierarchy in the generated url.</p>
+
+<p>You can navigate through a complex list of pages or categories, as long as they
+are related as <code>parent</code> and <code>child</code>.</p>
+
+<p>This allows you to have such urls like this one :
+<code>http://www.mysite.com/about/company/team/members</code> for instance, will show only
+the <code>members</code> page, but its parent has a parent, that has a parent, and so on,
+until you reach the "root" parent. And it's the same behavior for categories.</p>
+
+<p><em>Note:</em> this behavior is the precise reason why you have to use a specific rules
+for your routing, unless you may have many "404" errors.</p>
+
+<h3>
+<a id="generate-a-route-based-on-a-single-page" class="anchor" href="#generate-a-route-based-on-a-single-page" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Generate a route based on a single page</h3>
+
+<p><em>Note:</em> This behavior also works for categories.</p>
+
+<p>If you have a <code>Page</code> object in a view or in a controller, you can get the whole
+arborescence by using the <code>getTree()</code> method, which will navigate through all
+parents and return a string based on a separator argument (default <code>/</code>, for urls).</p>
+
+<p>Let's get an example with this kind of tree:</p>
+
+<pre><code>/ - Home (root url)
+├─ /welcome       - Welcome page (set as "homepage", so "Home" will be the same)
+│  ├─ /welcome/our-company            - Our company
+│  ├─ /welcome/our-company/financial  - Financial
+│  └─ /welcome/our-company/team       - Team
+└─ Contact
+</code></pre>
+
+<p>Imagine we want to generate the url for the "Team" page. You have this <code>Page</code>
+object in your view/controller.</p>
+
+<div class="highlight highlight-text-html-twig"><pre>    <span class="pl-c">{# Page : "Team" #}</span>
+    {{ path(<span class="pl-s"><span class="pl-pds">'</span>orbitale_cms_page<span class="pl-pds">'</span></span>, {<span class="pl-s"><span class="pl-pds">"</span>slugs<span class="pl-pds">"</span></span>: <span class="pl-smi">page</span>.<span class="pl-smi">tree</span>}) }}
+    <span class="pl-c">{# Will show : /welcome/our-company/team #}</span></pre></div>
+
+<p>Or in a controller:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1">    <span class="pl-c">// Page : "Team"</span></span>
+<span class="pl-s1">    <span class="pl-smi">$url</span> <span class="pl-k">=</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>generateUrl(<span class="pl-s"><span class="pl-pds">'</span>orbitale_cms_page<span class="pl-pds">'</span></span>, <span class="pl-c1">array</span>(<span class="pl-s"><span class="pl-pds">'</span>slugs<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-smi">$page</span><span class="pl-k">-&gt;</span>getTree()));</span>
+<span class="pl-s1">    <span class="pl-c">// $url === /welcome/our-company/team</span></span></pre></div>
+
+<p>With this, you have a functional tree system for your CMS!</p>
+
+<h2>
+<a id="change-homepage" class="anchor" href="#change-homepage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Change homepage</h2>
+
+<p>The homepage is always the first <code>Page</code> object with its <code>homepage</code> attribute set
+to true. Be sure to have only one element defined as homepage, or you may have
+unexpected results.</p>
+
+<p>You can have multiple homepages if you add them restrictions based on host and
+locale (see <a href="#page-restriction">next chapter</a>).</p>
+
+<h2>
+<a id="page-restriction-based-host-andor-locale" class="anchor" href="#page-restriction-based-host-andor-locale" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a name="page-restriction"></a>Page restriction based <code>host</code> and/or <code>locale</code>
+</h2>
+
+<p>If you are hosting your application in a multi-domain platform, you can use the
+<code>host</code> attribute in your page to restrict the view only to the specified host.</p>
+
+<p>It's great for example if you want to have different articles on different
+domains like <code>blog.mydomain.com</code> and <code>www.mydomain.com</code>.</p>
+
+<p>If you want to restrict by <code>locale</code>, you can specify the locale in the page.
+The best conjointed use is with prefixed routes in the routing file:</p>
+
+<div class="highlight highlight-source-yaml"><pre><span class="pl-c"># app/config/routing.yml</span>
+<span class="pl-s"><span class="pl-ent">orbitale_cms_page:</span></span>
+    <span class="pl-s"><span class="pl-ent">resource:</span> <span class="pl-s"><span class="pl-pds">"</span>@OrbitaleCmsBundle/Controller/PageController.php<span class="pl-pds">"</span></span></span>
+    <span class="pl-s"><span class="pl-ent">type:</span>     <span class="pl-s">annotation</span></span>
+    <span class="pl-c"># Add the locale to the prefix for if the page's locale is specified and is</span>
+    <span class="pl-c"># not equal to request locale, the app will return a 404 error.</span>
+    <span class="pl-s"><span class="pl-ent">prefix:</span>   <span class="pl-s">/{_locale}/page/ </span></span></pre></div>
+
+<h2>
+<a id="design" class="anchor" href="#design" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Design</h2>
+
+<p><code>OrbitaleCmsBundle</code> has some options to customize the design of your simple CMS.</p>
+
+<p>Mostly, you will take care of the <code>layouts</code> option (see
+<a href="#using-different-layouts">next chapter</a>), or the <code>design</code> option.</p>
+
+<h3>
+<a id="using-different-layouts" class="anchor" href="#using-different-layouts" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Using different layouts</h3>
+
+<p>Obviously, the default layout has no style.</p>
+
+<p>To change the layout, simply change the OrbitaleCmsBundle configuration to add
+your own layout:</p>
+
+<div class="highlight highlight-source-yaml"><pre><span class="pl-c"># app/config/config.yml</span>
+<span class="pl-s"><span class="pl-ent">orbitale_cms:</span></span>
+    <span class="pl-s"><span class="pl-ent">layouts:</span></span>
+        <span class="pl-s"><span class="pl-ent">front:</span> <span class="pl-s">{ resource: @App/layout.html.twig } </span></span><span class="pl-c"># The Twig path to your layout</span></pre></div>
+
+<p>Without overriding anything, you can easily change the layout for your CMS!</p>
+
+<p>Take a look at the <a href="Resources/views/default_layout.html.twig">default layout</a>
+to see which Twig blocks are mandatory to render correctly the pages.</p>
+
+<h3>
+<a id="advanced-layout-configuration" class="anchor" href="#advanced-layout-configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Advanced layout configuration</h3>
+
+<p>The basic configuration for a layout is to specify a template to extend.</p>
+
+<p>But if you look at the <a href="#configuration-reference">Configuration reference</a> you
+ will see that there are many other parameters you can use to define a layout:</p>
+
+<p>Prototype of a layout configuration:</p>
+
+<ul>
+<li>
+<strong>name</strong> (attribute used as key for the layouts list):<br>
+The name of your layout. Simply for readability issues, and maybe to get it
+directly from the config (if you need it).</li>
+<li>
+<strong>resource</strong>:<br>
+The Twig template used to render all the pages (see the <a href="#using-different-layouts">above</a> section)</li>
+<li>
+<strong>assets_css</strong> and <em>assets_js</em>:<br>
+Any asset to send to the Twig <code>asset()</code> function. The CSS is rendered in the
+<code>stylesheets</code> block, and js in the <code>javascripts</code> block.</li>
+<li>
+<strong>host</strong>:<br>
+The exact domain name you want the layout to match with.</li>
+<li>
+<strong>pattern</strong>:<br>
+The regexp of the path you want to match with for this layout.
+It's nice if you want to use a different layout for categories and pages. For
+example, you can specify a layout for the <code>^/page/</code> pattern, and another for
+<code>^/category/</code>. 
+If you specify a very deep pattern, you can even change the layout for a single
+page!</li>
+</ul>
+
+<p>Take another look on the <a href="#configuration-reference">config reference</a> if you
+need to get the prototype defaults.</p>
+
+<h3>
+<a id="changing-the-breadcrumbs-look" class="anchor" href="#changing-the-breadcrumbs-look" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a name="breadcrumbs"></a>Changing the "breadcrumbs" look</h3>
+
+<p>Under the <code>design</code> option, you have some that you can use to optimize the
+rendering of the breadcrumbs.</p>
+
+<p>Basically, it will look like this:</p>
+
+<p><a href="#breadcrumbs">Homepage</a> &gt; <a href="#breadcrumbs">Parent page</a> &gt; Current page</p>
+
+<p><strong>Note:</strong> The breadcrumbs wrapper already has <code>id="breadcrumbs"</code> on its tag.</p>
+
+<ul>
+<li>
+<strong>breadcrumbs_class</strong>:<br>
+Changes the class of the breadcrumbs wrapper.</li>
+<li>
+<strong>breadcrumbs_link_class</strong>:<br>
+Changes the class of any link in the breadcrumbs.</li>
+<li>
+<strong>breadcrumbs_current_class</strong>:<br>
+Changes the class of the current page in the breadcrumbs (which is not a link).</li>
+<li>
+<strong>breadcrumbs_separator</strong> <em>(default: "&gt;")</em>:<br>
+Changes the default separator used. You can use anything, but mostly we see <code>&gt;</code>,
+<code>/</code>, <code>|</code> or <code>*</code> on the web.<br>
+<strong>Note:</strong> This character is escaped in twig, so do not use things like <code>&amp;larr;</code>
+or the <code>&amp;</code> sign will be replaced with <code>&amp;amp;</code> (as well as other characters).</li>
+<li>
+<strong>breadcrumbs_separator_class</strong>:<br>
+You can specify a class for the separator (which is wrapped by a <code>&lt;span&gt;</code> tag),
+if you want to use special design or interaction on it.</li>
+</ul>
+
+<h2>
+<a id="cache" class="anchor" href="#cache" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cache</h2>
+
+<p>If you want to cache your cms results, just activate it via the config:</p>
+
+<div class="highlight highlight-source-yaml"><pre>    <span class="pl-s"><span class="pl-ent">cache:</span></span>
+        <span class="pl-s"><span class="pl-ent">enabled:</span> <span class="pl-s">true</span></span>
+        <span class="pl-c1"><span class="pl-ent">ttl:</span> 300</span></pre></div>
+
+<p>It uses Doctrine Result Cache so you need to activate it to:</p>
+
+<div class="highlight highlight-source-yaml"><pre>    <span class="pl-s"><span class="pl-ent">doctrine:</span>    </span>
+        <span class="pl-s"><span class="pl-ent">orm:</span></span>
+            <span class="pl-s"><span class="pl-ent">result_cache_driver:</span> <span class="pl-s">apc            </span></span></pre></div>
+
+<p>You can read more about DoctrineCache <a href="http://symfony.com/doc/current/reference/configuration/doctrine.html#caching-drivers">here</a>.</p>
+
+<h2>
+<a id="setup-easyadminbundle-to-manage-pages-and-categories-in-its-back-end" class="anchor" href="#setup-easyadminbundle-to-manage-pages-and-categories-in-its-back-end" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a name="easyadmin"></a>Setup EasyAdminBundle to manage pages and categories in its back-end</h2>
+
+<p>This configuration allows you to manage your pages and categories directly in the <a href="https://github.com/javiereguiluz/EasyAdminBundle">EasyAdminBundle</a> way.</p>
+
+<p>First, install <code>EasyAdminBundle</code>, and set it up by reading its documentation (view link above).</p>
+
+<p>After you installed it, you can add this configuration to inject your new classes in EasyAdmin:</p>
+
+<div class="highlight highlight-source-yaml"><pre><span class="pl-c"># app/config/config.yml</span>
+<span class="pl-s"><span class="pl-ent">easy_admin:</span></span>
+    <span class="pl-s"><span class="pl-ent">entities:</span></span>
+        <span class="pl-s"><span class="pl-ent">Pages:</span></span>
+            <span class="pl-s"><span class="pl-ent">label:</span> <span class="pl-s"><span class="pl-pds">"</span>Cms Pages<span class="pl-pds">"</span></span></span>
+            <span class="pl-s"><span class="pl-ent">class:</span> <span class="pl-s">Orbitale\Bundle\CmsBundle\Entity\Page</span></span>
+            <span class="pl-s"><span class="pl-ent">show:</span></span>
+                <span class="pl-s"><span class="pl-ent">fields:</span> <span class="pl-s">[ id, parent, title, slug, tree, content, metaDescription, metaTitle, metaKeywords, css, js, category, host, locale, homepage, enabled ]</span></span>
+            <span class="pl-s"><span class="pl-ent">list:</span></span>
+                <span class="pl-s"><span class="pl-ent">fields:</span> <span class="pl-s">[ id, parent, title, slug, tree, content, category, homepage, host, locale, enabled ]</span></span>
+            <span class="pl-s"><span class="pl-ent">form:</span></span>
+                <span class="pl-s"><span class="pl-ent">fields:</span> <span class="pl-s">[ title, slug, content, metaDescription, metaTitle, metaKeywords, css, js, category, parent, host, locale, homepage, enabled ]</span></span>
+
+        <span class="pl-s"><span class="pl-ent">Categories:</span></span>
+            <span class="pl-s"><span class="pl-ent">label:</span> <span class="pl-s"><span class="pl-pds">"</span>Cms Categories<span class="pl-pds">"</span></span></span>
+            <span class="pl-s"><span class="pl-ent">class:</span> <span class="pl-s">Orbitale\Bundle\CmsBundle\Entity\Category</span></span>
+            <span class="pl-s"><span class="pl-ent">list:</span></span>
+                <span class="pl-s"><span class="pl-ent">fields:</span> <span class="pl-s">[ id, name, slug, description, parent, enabled ]</span></span>
+            <span class="pl-s"><span class="pl-ent">form:</span></span>
+                <span class="pl-s"><span class="pl-ent">fields:</span> <span class="pl-s">[ name, slug, description, parent, enabled ]</span></span></pre></div>
+
+<h2>
+<a id="configuration-reference" class="anchor" href="#configuration-reference" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration reference</h2>
+
+<div class="highlight highlight-source-yaml"><pre><span class="pl-c"># app/config/config.yml</span>
+<span class="pl-s"><span class="pl-ent">orbitale_cms:</span></span>
+    <span class="pl-s"><span class="pl-ent">layouts:</span></span>
+        <span class="pl-c"># Prototype</span>
+        <span class="pl-s"><span class="pl-ent">name:</span></span>
+            <span class="pl-s"><span class="pl-ent">name:</span>       <span class="pl-s">~  </span></span><span class="pl-c"># Optional, it's automatically set from the key</span>
+            <span class="pl-s"><span class="pl-ent">resource:</span>   <span class="pl-s">~  </span></span><span class="pl-c"># Required, must be a valid twig template</span>
+            <span class="pl-s"><span class="pl-ent">assets_css:</span> <span class="pl-s">[] </span></span><span class="pl-c"># Used with the `asset()` twig function</span>
+            <span class="pl-s"><span class="pl-ent">assets_js:</span>  <span class="pl-s">[] </span></span><span class="pl-c"># Used with the `asset()` twig function</span>
+            <span class="pl-s"><span class="pl-ent">pattern:</span>    <span class="pl-s">~  </span></span><span class="pl-c"># Regexp</span>
+            <span class="pl-s"><span class="pl-ent">host:</span>       <span class="pl-s">~  </span></span><span class="pl-c"># Exact value</span>
+    <span class="pl-s"><span class="pl-ent">design:</span></span>
+        <span class="pl-s"><span class="pl-ent">breadcrumbs_class:</span>           <span class="pl-s"><span class="pl-pds">"</span>breadcrumb<span class="pl-pds">"</span></span><span class="pl-s">  </span></span><span class="pl-c"># The default value automatically suits to Bootstrap</span>
+        <span class="pl-s"><span class="pl-ent">breadcrumbs_link_class:</span>      <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span></span>
+        <span class="pl-s"><span class="pl-ent">breadcrumbs_current_class:</span>   <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span></span>
+        <span class="pl-s"><span class="pl-ent">breadcrumbs_separator:</span>       <span class="pl-s"><span class="pl-pds">"</span>&gt;<span class="pl-pds">"</span></span></span>
+        <span class="pl-s"><span class="pl-ent">breadcrumbs_separator_class:</span> <span class="pl-s"><span class="pl-pds">"</span>breadcrumb-separator<span class="pl-pds">"</span></span></span>
+    <span class="pl-s"><span class="pl-ent">cache:</span></span>
+        <span class="pl-s"><span class="pl-ent">enabled:</span> <span class="pl-s">false</span></span>
+        <span class="pl-c1"><span class="pl-ent">ttl:</span> 300</span>
+</pre></div>
+
+<h2>
+<a id="changelog" class="anchor" href="#changelog" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Changelog</h2>
+
+<p>Go to the <a href="https://github.com/Orbitale/CmsBundle/releases">releases</a> page to see what are the changes between each
+new version of Orbitale CmsBundle!</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/Orbitale/CmsBundle">Cmsbundle</a> is maintained by <a href="https://github.com/Orbitale">Orbitale</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
