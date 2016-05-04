@@ -11,17 +11,23 @@
   </head>
   <body>
     <section class="page-header">
-      <h1 class="project-name">Cmsbundle</h1>
+      <h1 class="project-name">Orbitale Cms Bundle</h1>
       <h2 class="project-tagline">Simple CMS bundle for Symfony</h2>
       <a href="https://github.com/Orbitale/CmsBundle" class="btn">View on GitHub</a>
-      <a href="https://github.com/Orbitale/CmsBundle/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/Orbitale/CmsBundle/tarball/master" class="btn">Download .tar.gz</a>
+       <br>
+
+       <a href="https://insight.sensiolabs.com/projects/dcb6d7ad-83c6-458d-acd6-8dde8b8020bc">
+         <img src="https://insight.sensiolabs.com/projects/dcb6d7ad-83c6-458d-acd6-8dde8b8020bc/mini.png" alt="SensioLabsInsight">
+       </a>
+       <a href="https://coveralls.io/r/Orbitale/CmsBundle?branch=master">
+         <img src="https://coveralls.io/repos/Orbitale/CmsBundle/badge.svg?branch=master" alt="Coverage Status">
+       </a>
+       <a href="https://travis-ci.org/Orbitale/CmsBundle">
+         <img src="https://travis-ci.org/Orbitale/CmsBundle.svg?branch=master" alt="Build Status">
+       </a>
     </section>
 
     <section class="main-content">
-      <p><a href="https://insight.sensiolabs.com/projects/dcb6d7ad-83c6-458d-acd6-8dde8b8020bc"><img src="https://insight.sensiolabs.com/projects/dcb6d7ad-83c6-458d-acd6-8dde8b8020bc/mini.png" alt="SensioLabsInsight"></a>
-<a href="https://coveralls.io/r/Orbitale/CmsBundle?branch=master"><img src="https://coveralls.io/repos/Orbitale/CmsBundle/badge.svg?branch=master" alt="Coverage Status"></a>
-<a href="https://travis-ci.org/Orbitale/CmsBundle"><img src="https://travis-ci.org/Orbitale/CmsBundle.svg?branch=master" alt="Build Status"></a></p>
 
 <h5>
 <a id="index" class="anchor" href="#index" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Index</h5>
@@ -99,11 +105,11 @@
 <p><em>Warning:</em>
  Both <code>Page</code> and <code>Category</code> controllers have to be "alone" in their routing path,
  because there is a "tree" routing management. If you set the prefix as "/"
- or any other path you are already using, make sure that <code>OrbitaleCmsBundle</code> 
- routes are loaded <strong>at the end of your routing file</strong>, or you may have some 
+ or any other path you are already using, make sure that <code>OrbitaleCmsBundle</code>
+ routes are loaded <strong>at the end of your routing file</strong>, or you may have some
  unexpected "404" or other errors, depending on the routes priority.<br>
  This is why we recommend you to <strong>load the <code>CategoryController</code> <em>before</em> the
- <code>PageController</code></strong>, and let both routes config be <strong>the last ones</strong> of your 
+ <code>PageController</code></strong>, and let both routes config be <strong>the last ones</strong> of your
  <code>routing.yml</code> file.<br>
  <strong>Note:</strong> In technical terms, the whole URI is scanned, not a simple part of it,
  this is why it can analyze very deep URIs like
@@ -285,7 +291,7 @@ The exact domain name you want the layout to match with.</li>
 The regexp of the path you want to match with for this layout.
 It's nice if you want to use a different layout for categories and pages. For
 example, you can specify a layout for the <code>^/page/</code> pattern, and another for
-<code>^/category/</code>. 
+<code>^/category/</code>.
 If you specify a very deep pattern, you can even change the layout for a single
 page!</li>
 </ul>
@@ -413,6 +419,6 @@ new version of Orbitale CmsBundle!</p>
 
     </section>
 
-  
+
   </body>
 </html>
