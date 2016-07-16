@@ -11,26 +11,21 @@
   </head>
   <body>
     <section class="page-header">
-      <h1 class="project-name">Orbitale Cms Bundle</h1>
+      <h1 class="project-name">Cmsbundle</h1>
       <h2 class="project-tagline">Simple CMS bundle for Symfony</h2>
       <a href="https://github.com/Orbitale/CmsBundle" class="btn">View on GitHub</a>
-       <br>
-
-       <a href="https://insight.sensiolabs.com/projects/dcb6d7ad-83c6-458d-acd6-8dde8b8020bc">
-         <img src="https://insight.sensiolabs.com/projects/dcb6d7ad-83c6-458d-acd6-8dde8b8020bc/mini.png" alt="SensioLabsInsight">
-       </a>
-       <a href="https://coveralls.io/r/Orbitale/CmsBundle?branch=master">
-         <img src="https://coveralls.io/repos/Orbitale/CmsBundle/badge.svg?branch=master" alt="Coverage Status">
-       </a>
-       <a href="https://travis-ci.org/Orbitale/CmsBundle">
-         <img src="https://travis-ci.org/Orbitale/CmsBundle.svg?branch=master" alt="Build Status">
-       </a>
-       <a href="https://scrutinizer-ci.com/g/Orbitale/CmsBundle/?branch=master">
-         <img src="https://scrutinizer-ci.com/g/Orbitale/CmsBundle/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality">
-       </a>
+      <a href="https://github.com/Orbitale/CmsBundle/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Orbitale/CmsBundle/tarball/master" class="btn">Download .tar.gz</a>
     </section>
 
     <section class="main-content">
+      <p><a href="https://insight.sensiolabs.com/projects/dcb6d7ad-83c6-458d-acd6-8dde8b8020bc"><img src="https://insight.sensiolabs.com/projects/dcb6d7ad-83c6-458d-acd6-8dde8b8020bc/mini.png" alt="SensioLabsInsight"></a>
+<a href="https://coveralls.io/r/Orbitale/CmsBundle?branch=master"><img src="https://coveralls.io/repos/Orbitale/CmsBundle/badge.svg?branch=master" alt="Coverage Status"></a>
+<a href="https://travis-ci.org/Orbitale/CmsBundle"><img src="https://travis-ci.org/Orbitale/CmsBundle.svg?branch=master" alt="Build Status"></a>
+<a href="https://scrutinizer-ci.com/g/Orbitale/CmsBundle/?branch=master"><img src="https://scrutinizer-ci.com/g/Orbitale/CmsBundle/badges/quality-score.png?b=master" alt="Scrutinizer Code Quality"></a></p>
+
+<p><g-emoji alias="warning" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/26a0.png">⚠️</g-emoji> You're looking at the 2.x branch documentation.<br>
+If you need information about 1.x, go <a href="https://github.com/Orbitale/CmsBundle/tree/1.x">here</a></p>
 
 <h5>
 <a id="index" class="anchor" href="#index" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Index</h5>
@@ -73,15 +68,13 @@
 <a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h2>
 
 <ul>
-<li>PHP 5.4+ (because we are using Traits)</li>
-<li>Symfony 2.3+</li>
+<li>PHP 5.4+</li>
+<li>Symfony 2.3+ or 3.0+</li>
 <li>Doctrine ORM</li>
 </ul>
 
 <h2>
 <a id="install" class="anchor" href="#install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install</h2>
-
-<p><em>Warning:</em> This bundle uses PHP Traits, so you must have PHP 5.4+</p>
 
 <p>Require the bundle by using <a href="https://getcomposer.org/">Composer</a>:</p>
 
@@ -96,14 +89,15 @@
 <span class="pl-s1"><span class="pl-c">// app/AppKernel.php</span></span>
 <span class="pl-s1"><span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">registerBundles</span>()</span>
 <span class="pl-s1">{</span>
-<span class="pl-s1">    <span class="pl-smi">$bundles</span> <span class="pl-k">=</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">    <span class="pl-smi">$bundles</span> <span class="pl-k">=</span> [</span>
 <span class="pl-s1">        <span class="pl-c">// ...</span></span>
 <span class="pl-s1">        <span class="pl-k">new</span> <span class="pl-c1">Orbitale\Bundle\CmsBundle\</span><span class="pl-c1">OrbitaleCmsBundle</span>(),</span>
-<span class="pl-s1">    );</span>
+<span class="pl-s1">    ];</span>
 <span class="pl-s1">}</span>
 <span class="pl-s1"></span></pre></div>
 
-<p>Import the necessary routing files.</p>
+<h3>
+<a id="import-the-necessary-routing-files" class="anchor" href="#import-the-necessary-routing-files" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Import the necessary routing files.</h3>
 
 <p><em>Warning:</em>
  Both <code>Page</code> and <code>Category</code> controllers have to be "alone" in their routing path,
@@ -130,6 +124,90 @@
     <span class="pl-s"><span class="pl-ent">resource:</span> <span class="pl-s"><span class="pl-pds">"</span>@OrbitaleCmsBundle/Controller/PageController.php<span class="pl-pds">"</span></span></span>
     <span class="pl-s"><span class="pl-ent">type:</span>     <span class="pl-s">annotation</span></span>
     <span class="pl-s"><span class="pl-ent">prefix:</span>   <span class="pl-s">/page/</span></span></pre></div>
+
+<h3>
+<a id="create-your-entities" class="anchor" href="#create-your-entities" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create your entities</h3>
+
+<p>This bundle supports Doctrine ORM only.</p>
+
+<p>In order to use it, you must create your own entities and configure the bundle with them.</p>
+
+<p>Update your config:</p>
+
+<div class="highlight highlight-source-yaml"><pre><span class="pl-c"># app/config/config.yml</span>
+<span class="pl-s"><span class="pl-ent">orbitale_cms:</span></span>
+    <span class="pl-s"><span class="pl-ent">page_class:</span> <span class="pl-s">AppBundle\Entity\Page</span></span>
+    <span class="pl-s"><span class="pl-ent">category_class:</span> <span class="pl-s">AppBundle\Entity\Category</span></span></pre></div>
+
+<h4>
+<a id="create-the-page-entity-and-add-it-to-your-config" class="anchor" href="#create-the-page-entity-and-add-it-to-your-config" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create the <code>Page</code> entity and add it to your config</h4>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">namespace</span> <span class="pl-en">AppBundle\Entity</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">Orbitale\Bundle\CmsBundle\Entity\Page</span> <span class="pl-k">as</span> <span class="pl-c1">BasePage</span>;</span>
+<span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">Doctrine\ORM\Mapping</span> <span class="pl-k">as</span> <span class="pl-c1">ORM</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">/**</span></span>
+<span class="pl-s1"><span class="pl-c"> * @ORM\Entity(repositoryClass="Orbitale\Bundle\CmsBundle\Repository\PageRepository")</span></span>
+<span class="pl-s1"><span class="pl-c"> * @ORM\Table(name="orbitale_cms_pages")</span></span>
+<span class="pl-s1"><span class="pl-c"> */</span></span>
+<span class="pl-s1"><span class="pl-k">class</span> <span class="pl-en">Page</span> <span class="pl-k">extends</span> <span class="pl-e">BasePage</span></span>
+<span class="pl-s1">{</span>
+<span class="pl-s1">    <span class="pl-c">/**</span></span>
+<span class="pl-s1"><span class="pl-c">     * <span class="pl-k">@var</span> int</span></span>
+<span class="pl-s1"><span class="pl-c">     * @ORM\Column(name="id", type="integer")</span></span>
+<span class="pl-s1"><span class="pl-c">     * @ORM\Id</span></span>
+<span class="pl-s1"><span class="pl-c">     * @ORM\GeneratedValue(strategy="AUTO")</span></span>
+<span class="pl-s1"><span class="pl-c">     */</span></span>
+<span class="pl-s1">    <span class="pl-k">protected</span> <span class="pl-smi">$id</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">/**</span></span>
+<span class="pl-s1"><span class="pl-c">     * <span class="pl-k">@return</span> int</span></span>
+<span class="pl-s1"><span class="pl-c">     */</span></span>
+<span class="pl-s1">    <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">getId</span>()</span>
+<span class="pl-s1">    {</span>
+<span class="pl-s1">        <span class="pl-k">return</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">id</span>;</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1">}</span></pre></div>
+
+<h4>
+<a id="create-the-category-entity-and-add-it-to-your-config" class="anchor" href="#create-the-category-entity-and-add-it-to-your-config" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create the <code>Category</code> entity and add it to your config</h4>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">namespace</span> <span class="pl-en">AppBundle\Entity</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">Orbitale\Bundle\CmsBundle\Entity\Category</span> <span class="pl-k">as</span> <span class="pl-c1">BaseCategory</span>;</span>
+<span class="pl-s1"><span class="pl-k">use</span> <span class="pl-c1">Doctrine\ORM\Mapping</span> <span class="pl-k">as</span> <span class="pl-c1">ORM</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c">/**</span></span>
+<span class="pl-s1"><span class="pl-c"> * @ORM\Entity(repositoryClass="Orbitale\Bundle\CmsBundle\Repository\CategoryRepository")</span></span>
+<span class="pl-s1"><span class="pl-c"> * @ORM\Table(name="orbitale_cms_categories")</span></span>
+<span class="pl-s1"><span class="pl-c"> */</span></span>
+<span class="pl-s1"><span class="pl-k">class</span> <span class="pl-en">Category</span> <span class="pl-k">extends</span> <span class="pl-e">BaseCategory</span></span>
+<span class="pl-s1">{</span>
+<span class="pl-s1">    <span class="pl-c">/**</span></span>
+<span class="pl-s1"><span class="pl-c">     * <span class="pl-k">@var</span> int</span></span>
+<span class="pl-s1"><span class="pl-c">     * @ORM\Column(name="id", type="integer")</span></span>
+<span class="pl-s1"><span class="pl-c">     * @ORM\Id</span></span>
+<span class="pl-s1"><span class="pl-c">     * @ORM\GeneratedValue(strategy="AUTO")</span></span>
+<span class="pl-s1"><span class="pl-c">     */</span></span>
+<span class="pl-s1">    <span class="pl-k">protected</span> <span class="pl-smi">$id</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">/**</span></span>
+<span class="pl-s1"><span class="pl-c">     * <span class="pl-k">@return</span> int</span></span>
+<span class="pl-s1"><span class="pl-c">     */</span></span>
+<span class="pl-s1">    <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">getId</span>()</span>
+<span class="pl-s1">    {</span>
+<span class="pl-s1">        <span class="pl-k">return</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span><span class="pl-smi">id</span>;</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1">}</span>
+<span class="pl-s1"></span></pre></div>
+
+<h3>
+<a id="update-your-db-schema" class="anchor" href="#update-your-db-schema" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Update your db schema</h3>
 
 <p>Update your database by executing this command from your Symfony root directory:</p>
 
@@ -158,7 +236,7 @@ within a specified <code>Category</code>.</p>
 <p>The URI for both is simply <code>/{slug}</code> where <code>slug</code> is the... page or category slug.</p>
 
 <p>If your page or category has one <code>parent</code>, then the URI is the following:
-<code>/{parentSlug}/{slug}</code>. </p>
+<code>/{parentSlug}/{slug}</code>.</p>
 
 <p>You can notice that we respect the pages hierarchy in the generated url.</p>
 
@@ -202,7 +280,7 @@ object in your view/controller.</p>
 <p>Or in a controller:</p>
 
 <div class="highlight highlight-text-html-php"><pre><span class="pl-s1">    <span class="pl-c">// Page : "Team"</span></span>
-<span class="pl-s1">    <span class="pl-smi">$url</span> <span class="pl-k">=</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>generateUrl(<span class="pl-s"><span class="pl-pds">'</span>orbitale_cms_page<span class="pl-pds">'</span></span>, <span class="pl-c1">array</span>(<span class="pl-s"><span class="pl-pds">'</span>slugs<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-smi">$page</span><span class="pl-k">-&gt;</span>getTree()));</span>
+<span class="pl-s1">    <span class="pl-smi">$url</span> <span class="pl-k">=</span> <span class="pl-smi">$this</span><span class="pl-k">-&gt;</span>generateUrl(<span class="pl-s"><span class="pl-pds">'</span>orbitale_cms_page<span class="pl-pds">'</span></span>, [<span class="pl-s"><span class="pl-pds">'</span>slugs<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-smi">$page</span><span class="pl-k">-&gt;</span>getTree()]);</span>
 <span class="pl-s1">    <span class="pl-c">// $url === /welcome/our-company/team</span></span></pre></div>
 
 <p>With this, you have a functional tree system for your CMS!</p>
@@ -236,7 +314,7 @@ The best conjointed use is with prefixed routes in the routing file:</p>
     <span class="pl-s"><span class="pl-ent">type:</span>     <span class="pl-s">annotation</span></span>
     <span class="pl-c"># Add the locale to the prefix for if the page's locale is specified and is</span>
     <span class="pl-c"># not equal to request locale, the app will return a 404 error.</span>
-    <span class="pl-s"><span class="pl-ent">prefix:</span>   <span class="pl-s">/{_locale}/page/ </span></span></pre></div>
+    <span class="pl-s"><span class="pl-ent">prefix:</span>   <span class="pl-s">/{_locale}/page/</span></span></pre></div>
 
 <h2>
 <a id="design" class="anchor" href="#design" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Design</h2>
@@ -302,6 +380,10 @@ page!</li>
 <p>Take another look on the <a href="#configuration-reference">config reference</a> if you
 need to get the prototype defaults.</p>
 
+<p><g-emoji alias="warning" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/26a0.png">⚠️</g-emoji> <strong>Warning!</strong> The <strong>first matching</strong> layout will be used, as well as
+ routing would do, so be sure to configure them in the right order!<br>
+Empty values won't be taken in account.</p>
+
 <h3>
 <a id="changing-the-breadcrumbs-look" class="anchor" href="#changing-the-breadcrumbs-look" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a name="breadcrumbs"></a>Changing the "breadcrumbs" look</h3>
 
@@ -342,14 +424,14 @@ if you want to use special design or interaction on it.</li>
 <p>If you want to cache your cms results, just activate it via the config:</p>
 
 <div class="highlight highlight-source-yaml"><pre>    <span class="pl-s"><span class="pl-ent">cache:</span></span>
-        <span class="pl-s"><span class="pl-ent">enabled:</span> <span class="pl-s">true</span></span>
+        <span class="pl-s"><span class="pl-ent">enabled:</span> <span class="pl-c1">true</span></span>
         <span class="pl-c1"><span class="pl-ent">ttl:</span> 300</span></pre></div>
 
-<p>It uses Doctrine Result Cache so you need to activate it to:</p>
+<p>It uses Doctrine Result Cache so you need to activate it:</p>
 
-<div class="highlight highlight-source-yaml"><pre>    <span class="pl-s"><span class="pl-ent">doctrine:</span>    </span>
+<div class="highlight highlight-source-yaml"><pre>    <span class="pl-s"><span class="pl-ent">doctrine:</span></span>
         <span class="pl-s"><span class="pl-ent">orm:</span></span>
-            <span class="pl-s"><span class="pl-ent">result_cache_driver:</span> <span class="pl-s">apc            </span></span></pre></div>
+            <span class="pl-s"><span class="pl-ent">result_cache_driver:</span> <span class="pl-s">apc</span></span></pre></div>
 
 <p>You can read more about DoctrineCache <a href="http://symfony.com/doc/current/reference/configuration/doctrine.html#caching-drivers">here</a>.</p>
 
@@ -366,20 +448,22 @@ if you want to use special design or interaction on it.</li>
 <span class="pl-s"><span class="pl-ent">easy_admin:</span></span>
     <span class="pl-s"><span class="pl-ent">entities:</span></span>
         <span class="pl-s"><span class="pl-ent">Pages:</span></span>
-            <span class="pl-s"><span class="pl-ent">label:</span> <span class="pl-s"><span class="pl-pds">"</span>Cms Pages<span class="pl-pds">"</span></span></span>
+            <span class="pl-s"><span class="pl-ent">label:</span> <span class="pl-s">admin.cms.pages</span></span>
             <span class="pl-s"><span class="pl-ent">class:</span> <span class="pl-s">Orbitale\Bundle\CmsBundle\Entity\Page</span></span>
             <span class="pl-s"><span class="pl-ent">show:</span></span>
-                <span class="pl-s"><span class="pl-ent">fields:</span> <span class="pl-s">[ id, parent, title, slug, tree, content, metaDescription, metaTitle, metaKeywords, css, js, category, host, locale, homepage, enabled ]</span></span>
+                <span class="pl-s"><span class="pl-ent">fields:</span> <span class="pl-s">[ id, parent, title, slug, tree, content, metaDescription, metaTitle, category, host, locale, homepage, enabled ]</span></span>
             <span class="pl-s"><span class="pl-ent">list:</span></span>
-                <span class="pl-s"><span class="pl-ent">fields:</span> <span class="pl-s">[ id, parent, title, slug, tree, content, category, homepage, host, locale, enabled ]</span></span>
+                <span class="pl-s"><span class="pl-ent">fields:</span> <span class="pl-s">[ id, parent, title, slug, tree, host, locale, { property: homepage, type: boolean }, { property: enabled, type: boolean } ]</span></span>
             <span class="pl-s"><span class="pl-ent">form:</span></span>
-                <span class="pl-s"><span class="pl-ent">fields:</span> <span class="pl-s">[ title, slug, content, metaDescription, metaTitle, metaKeywords, css, js, category, parent, host, locale, homepage, enabled ]</span></span>
+                <span class="pl-s"><span class="pl-ent">fields:</span> <span class="pl-s">[ title, slug, content, metaDescription, metaTitle, metaKeywords, css, js, category, parent, host, homepage, enabled ]</span></span>
 
         <span class="pl-s"><span class="pl-ent">Categories:</span></span>
             <span class="pl-s"><span class="pl-ent">label:</span> <span class="pl-s"><span class="pl-pds">"</span>Cms Categories<span class="pl-pds">"</span></span></span>
             <span class="pl-s"><span class="pl-ent">class:</span> <span class="pl-s">Orbitale\Bundle\CmsBundle\Entity\Category</span></span>
+            <span class="pl-s"><span class="pl-ent">show:</span></span>
+                <span class="pl-s"><span class="pl-ent">fields:</span> <span class="pl-s">[ id, parent, title, slug, tree, content, host, locale, homepage, enabled ]</span></span>
             <span class="pl-s"><span class="pl-ent">list:</span></span>
-                <span class="pl-s"><span class="pl-ent">fields:</span> <span class="pl-s">[ id, name, slug, description, parent, enabled ]</span></span>
+                <span class="pl-s"><span class="pl-ent">fields:</span> <span class="pl-s">[ id, parent, name, slug, description, { property: enabled, type: boolean } ]</span></span>
             <span class="pl-s"><span class="pl-ent">form:</span></span>
                 <span class="pl-s"><span class="pl-ent">fields:</span> <span class="pl-s">[ name, slug, description, parent, enabled ]</span></span></pre></div>
 
@@ -388,15 +472,17 @@ if you want to use special design or interaction on it.</li>
 
 <div class="highlight highlight-source-yaml"><pre><span class="pl-c"># app/config/config.yml</span>
 <span class="pl-s"><span class="pl-ent">orbitale_cms:</span></span>
+    <span class="pl-s"><span class="pl-ent">page_class:</span> <span class="pl-s">~              </span></span><span class="pl-c"># Required, must extend Orbitale Page class</span>
+    <span class="pl-s"><span class="pl-ent">category_class:</span> <span class="pl-s">~          </span></span><span class="pl-c"># Required, must extend Orbitale Category class</span>
     <span class="pl-s"><span class="pl-ent">layouts:</span></span>
         <span class="pl-c"># Prototype</span>
         <span class="pl-s"><span class="pl-ent">name:</span></span>
-            <span class="pl-s"><span class="pl-ent">name:</span>       <span class="pl-s">~  </span></span><span class="pl-c"># Optional, it's automatically set from the key</span>
-            <span class="pl-s"><span class="pl-ent">resource:</span>   <span class="pl-s">~  </span></span><span class="pl-c"># Required, must be a valid twig template</span>
-            <span class="pl-s"><span class="pl-ent">assets_css:</span> <span class="pl-s">[] </span></span><span class="pl-c"># Used with the `asset()` twig function</span>
-            <span class="pl-s"><span class="pl-ent">assets_js:</span>  <span class="pl-s">[] </span></span><span class="pl-c"># Used with the `asset()` twig function</span>
-            <span class="pl-s"><span class="pl-ent">pattern:</span>    <span class="pl-s">~  </span></span><span class="pl-c"># Regexp</span>
-            <span class="pl-s"><span class="pl-ent">host:</span>       <span class="pl-s">~  </span></span><span class="pl-c"># Exact value</span>
+            <span class="pl-s"><span class="pl-ent">name:</span>       <span class="pl-s">~      </span></span><span class="pl-c"># Optional, it's automatically set from the key if it's a string</span>
+            <span class="pl-s"><span class="pl-ent">resource:</span>   <span class="pl-s">~      </span></span><span class="pl-c"># Required, must be a valid twig template</span>
+            <span class="pl-s"><span class="pl-ent">assets_css:</span> <span class="pl-s">[]     </span></span><span class="pl-c"># Injected with the `asset()` twig function</span>
+            <span class="pl-s"><span class="pl-ent">assets_js:</span>  <span class="pl-s">[]     </span></span><span class="pl-c"># Injected with the `asset()` twig function</span>
+            <span class="pl-s"><span class="pl-ent">pattern:</span>    <span class="pl-s">~      </span></span><span class="pl-c"># Regexp</span>
+            <span class="pl-s"><span class="pl-ent">host:</span>       <span class="pl-s">~      </span></span><span class="pl-c"># Exact value</span>
     <span class="pl-s"><span class="pl-ent">design:</span></span>
         <span class="pl-s"><span class="pl-ent">breadcrumbs_class:</span>           <span class="pl-s"><span class="pl-pds">"</span>breadcrumb<span class="pl-pds">"</span></span><span class="pl-s">  </span></span><span class="pl-c"># The default value automatically suits to Bootstrap</span>
         <span class="pl-s"><span class="pl-ent">breadcrumbs_link_class:</span>      <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span></span>
@@ -404,7 +490,7 @@ if you want to use special design or interaction on it.</li>
         <span class="pl-s"><span class="pl-ent">breadcrumbs_separator:</span>       <span class="pl-s"><span class="pl-pds">"</span>&gt;<span class="pl-pds">"</span></span></span>
         <span class="pl-s"><span class="pl-ent">breadcrumbs_separator_class:</span> <span class="pl-s"><span class="pl-pds">"</span>breadcrumb-separator<span class="pl-pds">"</span></span></span>
     <span class="pl-s"><span class="pl-ent">cache:</span></span>
-        <span class="pl-s"><span class="pl-ent">enabled:</span> <span class="pl-s">false</span></span>
+        <span class="pl-s"><span class="pl-ent">enabled:</span> <span class="pl-c1">false</span></span>
         <span class="pl-c1"><span class="pl-ent">ttl:</span> 300</span>
 </pre></div>
 
@@ -422,6 +508,6 @@ new version of Orbitale CmsBundle!</p>
 
     </section>
 
-
+  
   </body>
 </html>
